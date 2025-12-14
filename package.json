@@ -8,5 +8,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@ashu2764/tonar-db-schema": "^1.0.5",
+    "express": "^5.2.1"
+  }
 }
