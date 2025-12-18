@@ -18,4 +18,13 @@ authRouter.post("/logout", authenticate, (req, res, next) => {
   authController.logout(req, res, next);
 });
 
+
+authRouter.post("/forgot-password", (req, res, next) =>
+  authController.forgotPassword(req, res, next)
+);
+
+authRouter.post("/reset-password", (req, res, next) =>
+  authController.resetPassword(req, res, next)
+);
+
 export default authRouter;
