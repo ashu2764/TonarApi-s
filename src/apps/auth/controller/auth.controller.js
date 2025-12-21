@@ -52,29 +52,30 @@ export class AuthController {
     }
   }
 
-    async forgotPassword(req, res, next) {
-    try {
-      const { email } = req.body;
-      if (!email) throwError("Email required", 400);
+async forgotPassword(req, res, next) {
+  try {
+    const { email } = req.body;
+    if (!email) throwError("Email required", 400);
 
-      const result = await this.authUsecase.forgotPassword(email);
-      res.status(200).json(result);
-    } catch (error) {
-      next(error);
-    }
+    const result = await this.authUsecase.forgotPassword(email);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
   }
+}
 
-  async resetPassword(req, res, next) {
-    try {
-      const { token, newPassword } = req.body;
-      if (!token || !newPassword) {
-        throwError("Token and new password required", 400);
-      }
+async resetPassword(req, res, next) {
+  try {
+    const { otp, newPassword } = req.body;
 
-      const result = await this.authUsecase.resetPassword(token, newPassword);
-      res.status(200).json(result);
-    } catch (error) {
-      next(error);
+    if (!otp || !newPassword) {
+      throwError("OTP and new password required", 400);
     }
+
+    const result = await this.authUsecase.resetPassword(otp, newPassword);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
   }
+}
 }

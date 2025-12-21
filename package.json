@@ -13,7 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@ashu2764/tonar-db-schema": "^1.0.12",
+    "@ashu2764/tonar-db-schema": "^1.0.16",
     "awilix": "^12.0.5",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { AuthRepository } from "../repository/auth.repository.js";
 import throwError from "../../../infrastructure/error-handling/throw-error.js";
-import { randomBytes } from "crypto";
+import { randomInt } from "crypto";
 
 
 export class AuthUsecase {
@@ -42,24 +42,20 @@ async forgotPassword(email) {
     const user = await this.authRepository.findByEmail(email);
     if (!user) throwError("User not found", 404);
 
-    const resetToken = randomBytes(32).toString("hex");
-    const expiry = Date.now() + 15 * 60 * 1000;
+    const otp = randomInt(100000, 999999).toString();
+    const expiry = Date.now() + 10 * 60 * 1000; // 10 minutes
 
-    await this.authRepository.updateResetToken(
-      user._id,
-      resetToken,
-      expiry
-    );
+    await this.authRepository.saveOtp(user._id, otp, expiry);
 
-    return {
-      message: "Password reset token generated",
-      resetToken
-    };
+    // 🔔 SEND OTP BY EMAIL HERE
+    console.log("RESET OTP:", otp);
+
+    return { message: "OTP sent to registered email" };
   }
 
-  async resetPassword(token, newPassword) {
-    const user = await this.authRepository.findByResetToken(token);
-    if (!user) throwError("Invalid or expired token", 400);
+   async resetPassword(otp, newPassword) {
+    const user = await this.authRepository.findByOtp(otp);
+    if (!user) throwError("Invalid or expired OTP", 400);
 
     await this.authRepository.resetPassword(user._id, newPassword);
 
