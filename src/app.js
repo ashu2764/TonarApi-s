@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./apps/auth/routes/auth.router.js";
 import userRoutes from "./apps/user/routes/user.routes.js";
+import addressRoutes from "./apps/address/routes/address.routes.js";
 
 
 const app = express();
@@ -17,6 +18,9 @@ app.use("/api/auth", authRoutes);
 
 //user routes
 app.use("/api/user", userRoutes);
+
+//address routes
+app.use("/api/address", addressRoutes);
 
 
 export default app;
