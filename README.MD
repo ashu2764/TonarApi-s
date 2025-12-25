@@ -68,6 +68,7 @@ CLIENT_URL=http://localhost:3000
 ---
 
 ## 📂 Project Architecture
+```
 src/
 ├── apps/
 │   ├── auth/          # Authentication module
@@ -87,6 +88,8 @@ src/
 │   └── cloudinary/    # Cloudinary integration        
 ├── app.js             # Express app setup
 └── server.js          # Server entry point
+
+```
 
 
 ### Each module follows: routes → controller → usecase → repository
