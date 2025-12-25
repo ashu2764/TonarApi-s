@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import { AuthRepository } from "../repository/auth.repository.js";
 import throwError from "../../../infrastructure/error-handling/throw-error.js";
 import { randomInt } from "crypto";
+import { sendEmail } from "../../../infrastructure/email/email.service.js";
+import {resetPasswordOtpTemplate} from "../../../infrastructure/email/templates/reset-password-otp.js";
 
 
 export class AuthUsecase {
@@ -47,8 +49,11 @@ async forgotPassword(email) {
 
     await this.authRepository.saveOtp(user._id, otp, expiry);
 
-    // 🔔 SEND OTP BY EMAIL HERE
-    console.log("RESET OTP:", otp);
+    await sendEmail({
+      to: user.email,
+      subject: "Tonar - Password Reset OTP",
+      html: resetPasswordOtpTemplate(otp)
+    });
 
     return { message: "OTP sent to registered email" };
   }
