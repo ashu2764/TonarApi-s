@@ -1,10 +1,14 @@
-import { mailTransporter } from "./email.config.js";
+import { tranEmailApi } from "./email.config.js";
 
 export const sendEmail = async ({ to, subject, html }) => {
-  await mailTransporter.sendMail({
-    from: "Tonar Support <itsashu268@gmail.com>",
-    to,
+   tranEmailApi.sendTransacEmail({
+    sender: {
+      name: "Tonar Support",
+      email: "itsashu268@gmail.com" // verified sender
+    },
+    to: [{ email: to }],
     subject,
-    html
+    htmlContent: html
   });
 };
+
