@@ -16,7 +16,7 @@ export class ProductController {
         }
 
       );
-      res.status(201).json(result);
+      res.status(201).json({data:result, message: "Product created successfully"  });
     } catch (error) {
       next(error);
     }
@@ -25,7 +25,7 @@ export class ProductController {
   async getAll(req, res, next) {
     try {
       const result = await this.productUsecase.getProducts();
-      res.status(200).json(result);
+      res.status(200).json({data:result, message: "Products retrieved successfully"});
     } catch (error) {
       next(error);
     }
@@ -34,7 +34,7 @@ export class ProductController {
   async getById(req, res, next) {
     try {
       const result = await this.productUsecase.getProductById(req.params.id);
-      res.status(200).json(result);
+      res.status(200).json({data:result, message: "Product retrieved successfully"});
     } catch (error) {
       next(error);
     }
@@ -51,7 +51,7 @@ export class ProductController {
           images: newImages
         }
       );
-      res.status(200).json(result);
+      res.status(200).json({data:result, message: "Product updated successfully" });
     } catch (error) {
       next(error);
     }

@@ -11,7 +11,7 @@ export class AddressController {
         req.user.id,
         req.body
       );
-      res.status(201).json(result);
+      res.status(201).json({data:result, message: "Address created successfully"});
     } catch (error) {
       next(error);
     }
@@ -20,7 +20,7 @@ export class AddressController {
   async getAll(req, res, next) {
     try {
       const result = await this.addressUsecase.getAddresses(req.user.id);
-      res.status(200).json(result);
+      res.status(200).json({data:result, message: "Addresses retrieved successfully"});
     } catch (error) {
       next(error);
     }
@@ -34,7 +34,7 @@ export class AddressController {
         req.body
       );
 
-      res.status(200).json(result);
+      res.status(200).json({data:result, message: "Address updated successfully" });
     } catch (error) {
       next(error);
     }
@@ -46,7 +46,7 @@ export class AddressController {
         req.params.id,
         req.user.id
       );
-      res.status(200).json(result);
+      res.status(200).json({data:result, message: "Address deleted successfully" });
     } catch (error) {
       next(error);
     }

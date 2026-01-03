@@ -9,7 +9,7 @@ export class AuthController {
   async register(req, res, next) {
     try {
       const result = await this.authUsecase.register(req.body);
-      res.status(201).json(result);
+      res.status(201).json({data:result, message: "User registered successfully"  });
     } catch (error) {
       next(error);
     }
@@ -32,7 +32,7 @@ export class AuthController {
         maxAge: 7 * 24 * 60 * 60 * 1000
       });
 
-      res.status(200).json({ user });
+      res.status(200).json({data:user, message: "Logged in successfully"});
     } catch (error) {
       next(error);
     }
@@ -58,7 +58,7 @@ async forgotPassword(req, res, next) {
     if (!email) throwError("Email required", 400);
 
     const result = await this.authUsecase.forgotPassword(email);
-    res.status(200).json(result);
+    res.status(200).json({data:result, message: "OTP sent to email successfully" });
   } catch (error) {
     next(error);
   }
@@ -73,7 +73,7 @@ async resetPassword(req, res, next) {
     }
 
     const result = await this.authUsecase.resetPassword(otp, newPassword);
-    res.status(200).json(result);
+    res.status(200).json({data:result, message: "Password reset successfully" });
   } catch (error) {
     next(error);
   }

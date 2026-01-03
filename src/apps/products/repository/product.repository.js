@@ -5,19 +5,22 @@ export class ProductRepository {
     return ProductSchema.create(payload);
   }
 
-  async findAll() {
-    return ProductSchema.find({ isActive: true });
+  async findAll(filter = {}) {
+    return ProductSchema.find(filter)
+      .populate("category", "name slug isActive")
+      .populate("createdBy", "firstName lastName email");
   }
 
   async findById(id) {
-    return ProductSchema.findById(id);
+    return ProductSchema.findById(id)
+      .populate("category", "name slug isActive")
+      .populate("createdBy", "firstName lastName email");
   }
 
-  async updateById(id, payload) {
-    return ProductSchema.findByIdAndUpdate(id, payload, {
-      new: true,
-      runValidators: true
-    });
+  async updateById(id, data) {
+    return ProductSchema.findByIdAndUpdate(id, data, { new: true })
+      .populate("category", "name slug isActive")
+      .populate("createdBy", "firstName lastName email");
   }
 
   async deleteById(id) {

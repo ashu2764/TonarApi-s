@@ -6,6 +6,7 @@ import authRoutes from "./apps/auth/routes/auth.router.js";
 import userRoutes from "./apps/user/routes/user.routes.js";
 import addressRoutes from "./apps/address/routes/address.routes.js";
 import productRoutes from "./apps/products/routes/produt.routes.js";
+import categoryRoutes from "./apps/category/routes/category.routes.js";
 
 
 const app = express();
@@ -26,5 +27,7 @@ app.use("/api/address", addressRoutes);
 //products routes
 app.use("/api/products", productRoutes);
 
+//category routes
+app.use("/api", categoryRoutes);
 
 export default app;

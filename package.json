@@ -13,10 +13,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@ashu2764/tonar-db-schema": "^1.0.18",
+    "@ashu2764/tonar-db-schema": "^1.0.20",
     "awilix": "^12.0.5",
     "bcrypt": "^6.0.0",
-    "cloudinary": "^1.41.3",
+    "cloudinary": "^2.8.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
@@ -25,10 +25,11 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.1",
     "multer": "^2.0.2",
-    "multer-storage-cloudinary": "^4.0.0",
+    "multer-storage-cloudinary": "^2.2.1",
     "nodemailer": "^7.0.12",
     "nodemon": "^3.1.11",
     "resend": "^6.6.0",
-    "sib-api-v3-sdk": "^8.5.0"
+    "sib-api-v3-sdk": "^8.5.0",
+    "slugify": "^1.6.6"
   }
 }
