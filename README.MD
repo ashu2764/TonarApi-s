@@ -80,8 +80,8 @@ src/
 │   └── payment/       # Payment processing (planned)
 ├── infrastructure/
 │   ├── middlewares/   # Custom middlewares
-│    ├── db/            # DB connection
-│    ├── email/         # email service for reset password otp
+│   ├── db/            # DB connection
+│   ├── email/         # email service for reset password otp
 │   ├── error-handling/# Error handling utilities
 │   └── cloudinary/    # Cloudinary integration        
 ├── app.js             # Express app setup
