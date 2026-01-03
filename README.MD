@@ -56,10 +56,7 @@ CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 
-SMTP_HOST=smtp-relay.brevo.com
-SMTP_PORT=587
-SMTP_USER=9edd28001@smtp-brevo.com
-SMTP_PASS=yourkey
+BREVO_API_KEY=your_api_key
 
 
 CLIENT_URL=http://localhost:3000
