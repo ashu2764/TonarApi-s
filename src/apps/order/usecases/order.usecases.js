@@ -2,87 +2,90 @@ import throwError from "../../../infrastructure/error-handling/throw-error.js";
 import { OrderRepository } from "../repository/order.repository.js";
 import { CartRepository } from "../../cart/repository/cart.repository.js";
 import { ProductRepository } from "../../products/repository/product.repository.js";
+import mongoose from "mongoose";
 
 export class OrderUsecase {
-  constructor() {
-    this.orderRepository = new OrderRepository();
-    this.cartRepository = new CartRepository();
-    this.productRepository = new ProductRepository();
-  }
-
-  async placeOrder(userId, addressId) {
-    const cart = await this.cartRepository.findByUser(userId);
-    if (!cart || cart.items.length === 0) {
-      throwError("Cart is empty", 400);
+    constructor() {
+        this.orderRepository = new OrderRepository();
+        this.cartRepository = new CartRepository();
+        this.productRepository = new ProductRepository();
     }
 
-    let total = 0;
-    const items = [];
+    async placeOrder(userId, addressId) {
+        const cart = await this.cartRepository.findByUser(userId);
+        if (!cart || cart.items.length === 0) {
+            throwError("Cart is empty", 400);
+        }
 
-   for (const item of cart.items) {
-  const productId = item.product._id || item.product;
+        let total = 0;
+        const items = [];
 
-  const product = await this.productRepository.findById(productId);
-  if (!product) {
-    throwError("Product no longer exists", 404);
-  }
+        for (const item of cart.items) {
+            const productId = item.product._id || item.product;
 
-  if (product.stock < item.quantity) {
-    throwError(`Insufficient stock for ${product.name}`, 400);
-  }
+            const product = await this.productRepository.findById(productId);
+            if (!product) {
+                throwError("Product no longer exists", 404);
+            }
 
-  product.stock -= item.quantity;
-  await product.save();
+            if (product.stock < item.quantity) {
+                throwError(`Insufficient stock for ${product.name}`, 400);
+            }
 
-  total += product.price * item.quantity;
+            product.stock -= item.quantity;
+            await product.save();
 
-  items.push({
-    product: product._id,
-    quantity: item.quantity,
-    price: product.price
-  });
-}
+            total += product.price * item.quantity;
 
-    const order = await this.orderRepository.create({
-      user: userId,
-      items,
-      totalAmount: total,
-      shippingAddress: addressId
-    });
+            items.push({
+                product: product._id,
+                quantity: item.quantity,
+                price: product.price
+            });
+        }
 
-    cart.items = [];
-    await cart.save();
+        const order = await this.orderRepository.create({
+            user: userId,
+            items,
+            totalAmount: total,
+            shippingAddress: addressId
+        });
 
-    return order;
-  }
+        cart.items = [];
+        await cart.save();
 
-  async getOrders(userId) {
-    return this.orderRepository.findByUser(userId);
-  }
-
-  async getOrderById(orderId, userId) {
-    const order = await this.orderRepository.findById(orderId);
-    if (!order) throwError("Order not found", 404);
-
-    if (order.user._id.toString() !== userId) {
-      throwError("Unauthorized", 403);
+        return order;
     }
 
-    return order;
-  }
-
-  async cancelOrder(orderId, userId) {
-    const order = await this.orderRepository.findById(orderId);
-    if (!order) throwError("Order not found", 404);
-
-    if (order.user._id.toString() !== userId) {
-      throwError("Unauthorized", 403);
+    async getOrders(userId) {
+        return this.orderRepository.findByUser(userId);
     }
 
-    if (order.status !== "pending") {
-      throwError("Order cannot be cancelled", 400);
+    async getOrderById(orderId, userId) {
+        const order = await this.orderRepository.findById(orderId);
+        if (!order) throwError("Order not found", 404);
+
+        const orderUserId = order.user._id.toString();
+
+         if (orderUserId !== userId.toString()) {
+            throwError("Unauthorized", 403);
+        }
+
+        return order;
     }
 
-    return this.orderRepository.updateStatus(orderId, "cancelled");
-  }
+    async cancelOrder(orderId, userId) {
+        const order = await this.orderRepository.findById(orderId);
+        if (!order) throwError("Order not found", 404);
+
+        if (order.user._id.toString() !== userId.toString()) {
+            throwError("Unauthorized", 403);
+        }
+
+        if (order.status !== "pending") {
+            throwError("Order cannot be cancelled", 400);
+        }
+
+        return this.orderRepository.updateStatus(orderId, "cancelled");
+    }
 }
